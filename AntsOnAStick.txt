@@ -1,0 +1,42 @@
+from collections import deque
+T = int(input())
+for iiiii in range(1, T+1):
+    n, l = map(int, input().split())
+    dl = []
+    dr = []
+    al = []
+    for i in range(n):
+        p, d = map(int, input().split())
+        if d == 0:
+            dl.append((p, i+1))
+        else:
+            dr.append((p, i+1))
+        al.append((p,i+1))
+    al.sort()
+    dl.sort()
+    dr.sort()
+    al, dl, dr = deque(al), deque(dl), deque(dr)
+    ans = []
+    while dl and dr:
+        #print(dl[0][0], dr[-1][0], l)
+        if dl[0][0] > l - dr[-1][0]:
+            dr.pop()
+            ans.append(al.pop()[1])
+        elif dl[0][0] == l - dr[-1][0]:
+            dl.popleft()
+            dr.pop()
+            _, a = al.pop()
+            _, b = al.popleft()
+            ans.append(min(a, b))
+            ans.append(max(a, b))
+        else:
+            dl.popleft()
+            ans.append(al.popleft()[1])
+    while dl:
+        dl.pop()
+        ans.append(al.popleft()[1])
+    while dr:
+        dr.pop()
+        ans.append(al.pop()[1])
+
+    print(f'Case #{iiiii}: {" ".join(map(str, ans))}')

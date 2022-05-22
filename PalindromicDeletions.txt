@@ -1,0 +1,39 @@
+from functools import lru_cache
+T = int(input())
+@lru_cache()
+def check(b):
+    if b == b[::-1]:
+        return True
+    return False
+
+_mod = 1000000007
+def mod(a, b):
+    while a % b != 0:
+        a += _mod
+    return a // b
+    
+@lru_cache()
+def topbottom(a):
+    ans = 0
+    for i in range(len(a)):
+        temp = a[:i] + a[i+1:]
+        if check(temp):
+            ans += 1
+        ans += topbottom(temp)
+        ans %= _mod
+        #print(f'{a} -> {temp}, {ans}')
+    ans = mod(ans, len(a)) if len(a) > 0 else 0
+    return ans
+
+for iiiii in range(1, T+1):
+    n = int(input())
+    st = input()
+    q = topbottom(st)
+    #print(q)
+#    for i in range(2, n+1):
+#        while q % i != 0:
+#            q += 1000000007
+#        q //= i
+    q = int(q)
+    print('Case #{}: {}'.format(iiiii, q))
+    #print(topbottomed)
